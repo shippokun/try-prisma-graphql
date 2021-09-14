@@ -8,3 +8,14 @@ PrismaORM と GraphQL のテスト
 // dbの立ち上げ
 $ docker compose up -d
 ```
+
+```shell
+// migration
+$ npm run migrate
+
+// seed
+$ npm run db:seed
+
+// reset
+$ npm run db:reset
+```
