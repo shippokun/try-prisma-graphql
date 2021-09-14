@@ -11,7 +11,7 @@ $ docker compose up -d
 
 ```shell
 // migration
-$ npm run migrate
+$ npm run db:migrate
 
 // seed
 $ npm run db:seed
