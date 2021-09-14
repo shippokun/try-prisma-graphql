@@ -19,3 +19,8 @@ $ npm run db:seed
 // reset
 $ npm run db:reset
 ```
+
+```shell
+// GraphQL server 立ち上げ
+$ npm run dev
+```

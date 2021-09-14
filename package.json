@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node src/server.ts",
     "db:reset": "prisma db push --accept-data-loss --schema=./prisma/reset.prisma && npm run migrate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed"
