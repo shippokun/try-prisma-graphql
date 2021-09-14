@@ -1,0 +1,17 @@
+version: "3"
+services:
+  db:
+    image: postgres:13
+    container_name: "prisma-postgres"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    ports:
+      - "4321:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
+    driver: local
