@@ -7,12 +7,16 @@
     "dev": "ts-node src/server.ts",
     "db:reset": "prisma db push --accept-data-loss --schema=./prisma/reset.prisma && npm run migrate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.2.0",
+    "@graphql-codegen/typescript": "^2.2.2",
+    "@graphql-codegen/typescript-resolvers": "^2.2.1",
     "@types/express": "^4.17.13",
     "@types/node": "^16.9.1",
     "prisma": "^3.0.2",

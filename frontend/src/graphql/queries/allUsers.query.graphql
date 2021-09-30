@@ -1,0 +1,21 @@
+query allUsers {
+  allUsers {
+    id
+    email
+    name
+    posts {
+      id
+      createdAt
+      updatedAt
+      title
+      content
+      publish
+      authorId
+    }
+    profile {
+      id
+      bio
+      userId
+    }
+  }
+}

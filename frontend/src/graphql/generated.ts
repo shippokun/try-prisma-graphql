@@ -1,3 +1,6 @@
+import { GraphQLClient } from 'graphql-request';
+import * as Dom from 'graphql-request/dist/types.dom';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -15,7 +18,6 @@ export type Scalars = {
 
 export type Post = {
   __typename?: 'Post';
-  author: User;
   authorId: Scalars['Int'];
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
@@ -27,9 +29,8 @@ export type Post = {
 
 export type Profile = {
   __typename?: 'Profile';
-  bio: Scalars['String'];
+  bio?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  user?: Maybe<User>;
   userId?: Maybe<Scalars['Int']>;
 };
 
@@ -46,3 +47,47 @@ export type User = {
   posts: Array<Post>;
   profile?: Maybe<Profile>;
 };
+
+export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllUsersQuery = { __typename?: 'Query', allUsers: Array<{ __typename?: 'User', id: number, email: string, name?: Maybe<string>, posts: Array<{ __typename?: 'Post', id: number, createdAt: any, updatedAt: any, title: string, content?: Maybe<string>, publish: boolean, authorId: number }>, profile?: Maybe<{ __typename?: 'Profile', id: number, bio?: Maybe<string>, userId?: Maybe<number> }> }> };
+
+
+export const AllUsersDocument = gql`
+    query allUsers {
+  allUsers {
+    id
+    email
+    name
+    posts {
+      id
+      createdAt
+      updatedAt
+      title
+      content
+      publish
+      authorId
+    }
+    profile {
+      id
+      bio
+      userId
+    }
+  }
+}
+    `;
+
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
+
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    allUsers(variables?: AllUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AllUsersQuery>(AllUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allUsers');
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

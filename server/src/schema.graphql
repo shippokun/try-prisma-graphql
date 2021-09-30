@@ -1,0 +1,29 @@
+type Post {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  content: String
+  publish: Boolean!
+  authorId: Int!
+}
+
+type Profile {
+  id: Int!
+  bio: String
+  userId: Int
+}
+
+type User {
+  id: Int!
+  email: String!
+  name: String
+  posts: [Post!]!
+  profile: Profile
+}
+
+type Query {
+  allUsers: [User!]!
+}
+
+scalar DateTime

@@ -1,57 +1,23 @@
+import path from "path";
+import fs from "fs";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { DateTimeResolver } from "graphql-scalars";
 import { Context } from "./context";
+import { Resolvers } from "../lib/generated/resolvers";
 
-const typeDefs = `
-type Post {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  content: String
-  publish: Boolean!
-  author: User!
-  authorId: Int!
-}
+const typeDefs = fs.readFileSync(path.resolve(__dirname, "./schema.graphql"), {
+  encoding: "utf-8",
+});
 
-type Profile {
-  id: Int!
-  bio: String!
-  user: User
-  userId: Int
-}
-
-type User {
-  id: Int!
-  email: String!
-  name: String
-  posts: [Post!]!
-  profile: Profile
-}
-
-type Query {
-  allUsers: [User!]!
-}
-
-scalar DateTime
-`;
-
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
     allUsers: (_parent: any, _args: any, context: Context) => {
-      return context.prisma.user.findMany();
+      return context.prisma.user.findMany({
+        include: { posts: true, profile: true },
+      });
     },
   },
   DateTime: DateTimeResolver,
-  Post: {
-    author: (parent: { id?: number }, _args: any, context: Context) => {
-      return context.prisma.post
-        .findUnique({
-          where: { id: parent?.id },
-        })
-        .author();
-    },
-  },
   User: {
     posts: (parent: { id?: number }, _args: any, context: Context) => {
       return context.prisma.user
