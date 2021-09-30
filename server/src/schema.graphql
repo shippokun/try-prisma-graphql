@@ -24,6 +24,18 @@ type User {
 
 type Query {
   allUsers: [User!]!
+  posts: [Post!]!
+  fetchPost(id: Int!): Post
+}
+
+query FetchPost($id: Int!) {
+  post(id: $id) {
+    id
+    updatedAt
+    title
+    content
+    publish
+  }
 }
 
 scalar DateTime

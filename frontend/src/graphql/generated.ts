@@ -37,6 +37,7 @@ export type Profile = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
+  posts: Array<Post>;
 };
 
 export type User = {
@@ -52,6 +53,11 @@ export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AllUsersQuery = { __typename?: 'Query', allUsers: Array<{ __typename?: 'User', id: number, email: string, name?: Maybe<string>, posts: Array<{ __typename?: 'Post', id: number, createdAt: any, updatedAt: any, title: string, content?: Maybe<string>, publish: boolean, authorId: number }>, profile?: Maybe<{ __typename?: 'Profile', id: number, bio?: Maybe<string>, userId?: Maybe<number> }> }> };
+
+export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, createdAt: any, updatedAt: any, title: string, content?: Maybe<string>, publish: boolean, authorId: number }> };
 
 
 export const AllUsersDocument = gql`
@@ -77,6 +83,19 @@ export const AllUsersDocument = gql`
   }
 }
     `;
+export const PostsDocument = gql`
+    query posts {
+  posts {
+    id
+    createdAt
+    updatedAt
+    title
+    content
+    publish
+    authorId
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -87,6 +106,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     allUsers(variables?: AllUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllUsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllUsersQuery>(AllUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allUsers');
+    },
+    posts(variables?: PostsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PostsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PostsQuery>(PostsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'posts');
     }
   };
 }

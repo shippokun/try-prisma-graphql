@@ -16,6 +16,16 @@ const resolvers: Resolvers = {
         include: { posts: true, profile: true },
       });
     },
+    posts: (_parent: any, _args: any, context: Context) => {
+      return context.prisma.post.findMany();
+    },
+    fetchPost: (_parent: any, args: { id: number }, context: Context) => {
+      return context.prisma.post.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
+    },
   },
   DateTime: DateTimeResolver,
   User: {
